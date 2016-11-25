@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="sale.act_wait_ship" model="workflow.activity">
+            <field name="wkf_id" ref="sale.wkf_sale"/>
+            <field name="name">wait_ship</field>
+        </record>
+        
+        <record id="act_ship_another" model="workflow.activity">
+            <field name="wkf_id" ref="sale.wkf_sale"/>
+            <field name="name">ship_another</field>
+            <field name="kind">function</field>
+            <field name="action">action_ship_create_gr_sol()</field>
+        </record>
+
+
+        <record id="sale.trans_router_wait_ship" model="workflow.transition">
+            <field name="act_from" ref="sale.act_router"/>
+            <field name="act_to" ref="sale.act_wait_ship"/>
+        </record>
+
+		<!-- Transition -->
+        <record id="sale.trans_wait_ship_ship" model="workflow.transition">
+            <field name="act_from" ref="sale.act_wait_ship"/>
+            <field name="act_to" ref="sale.act_ship"/>
+            <field name="condition">(gr_merge_on=='gr_so') and procurement_needed() and ((order_policy!='prepaid') or invoiced)</field>
+        </record>
+
+        <record id="trans_wait_ship_another" model="workflow.transition">
+            <field name="act_from" ref="sale.act_wait_ship"/>
+            <field name="act_to" ref="act_ship_another"/>
+            <field name="condition">(gr_merge_on=='gr_sol') and procurement_needed() and ((order_policy!='prepaid') or invoiced)</field>
+        </record>
+			
+
+        <record id="trans_ship_ship_another_end" model="workflow.transition">
+            <field name="act_from" ref="act_ship_another"/>
+            <field name="act_to" ref="sale.act_ship_end"/>
+            <field name="signal">ship_end</field>
+            <field name="trigger_model" eval="False"/> <!-- Force empty  -->
+            <field name="trigger_expr_id" eval="False"/> <!-- Force empty -->
+            <field name="condition" eval="True"/> <!-- Force empty -->
+        </record>
+        
+        <record id="trans_ship_ship_another_except" model="workflow.transition">
+            <field name="act_from" ref="act_ship_another"/>
+            <field name="act_to" ref="sale.act_ship_except"/>
+            <field name="signal">ship_except</field>
+            <field name="condition" eval="True"/> <!-- Force empty -->
+        </record>
+    </data>
+</openerp>

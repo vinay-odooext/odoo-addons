@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <record id="view_merge_sol_do" model="ir.ui.view">
+      <field name="name">Merge SOL GrBy DO</field>
+      <field name="model">merge.sol.do</field>
+      <field name="arch" type="xml">
+        <form string="Merge SOL GrBy DO">
+          <group>
+             <label string="Do you want to merged SOL grby partner and product with confirmed SO ?"/>
+          </group>
+          <footer>
+            <button name="merged_sol_do" string="Merge" type="object" class="oe_highlight"/>or
+            <button string="Cancel" class="oe_link" special="cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <act_window name="Merged/Confimed SOL"
+            res_model="merge.sol.do"
+            src_model="sale.order.line"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"
+            id="action_view_merge_sol_do"/>
+
+  </data>
+</openerp>
