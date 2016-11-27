@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 {
     'name': "society_fund_management_9",
-
-    'summary': """
-        Mandal Fund-scheme Management""",
-
     'description': """
 Mandal Fund-Scheam including Loan Management
 ============================================
@@ -16,7 +12,6 @@ Main Features
 * Allocate Loan with interest confiiguration (Fixed and Floating)
 * for more detail you can refer following blog URL:https://docs.google.com/document/d/1COrlITqKvw83cXS9q2txQzuJi8GLH-00QNcJkJGPEgs/pub
 """,
-
     'author': "VperfectCS",
     'website': "http://www.vperfectcs.com",
     'category': 'Accounting & Finance',
