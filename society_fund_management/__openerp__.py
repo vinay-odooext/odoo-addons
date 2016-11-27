@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "society_fund_management_9",
+    'name': "society_fund_management",
 
     'summary': """
         Mandal Fund-scheme Management""",
