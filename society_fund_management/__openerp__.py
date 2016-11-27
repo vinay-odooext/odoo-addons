@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 {
     'name': "society_fund_management",
-
-    'summary': """
-        Mandal Fund-Scheam Management""",
-
     'description': """
 Mandal Fund-Scheam including Loan Management
 ============================================
