@@ -65,7 +65,7 @@ class Split_MO(models.TransientModel):
         for data in self.data_mo_ids:
             res = mo_obj.product_id_change(mo_id.product_id.id, data.split_lot)
             copy_mo = mo_id.copy()
-            copy_mo.write({'product_qty':data.split_lot, 'mrp_raw_material_ids': res['value']['mrp_raw_material_ids'], 'origin': mo_id.name})
+            copy_mo.write({'product_qty':data.split_lot, 'origin': mo_id.name})
         mo_id.write({'state':'cancel'})
         return True
             

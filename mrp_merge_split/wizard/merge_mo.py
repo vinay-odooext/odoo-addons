@@ -59,6 +59,6 @@ class Merge_MO(models.TransientModel):
                 ref += ', '+str(mo.name)
             mo.write({'state':'cancel'})
         res = mo_obj.product_id_change(new_mo.product_id.id, total_qty)
-        new_mo.write({'product_qty':total_qty, 'mrp_raw_material_ids': res['value']['mrp_raw_material_ids'], 'origin': ref})
+        new_mo.write({'product_qty':total_qty, 'origin': ref})
                 
 
