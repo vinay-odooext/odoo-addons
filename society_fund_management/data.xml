@@ -1,0 +1,61 @@
+<openerp>
+  <data noupdate="1">
+    <!-- Analytic Account -->
+    <record id="analytic_interest_society" model="account.analytic.account">
+      <field name="name">Interest Account</field>
+      <field name="type">normal</field>
+    </record>
+    <record id="analytic_panalty_society" model="account.analytic.account">
+      <field name="name">Panalty Account</field>
+      <field name="type">normal</field>
+    </record>
+
+    <!-- Account Journals -->
+    <record id="account_loan_journal" model="account.journal">
+      <field name="code">LN</field>
+      <field name="name">Loan Journal</field>
+      <field name="type">sale</field>
+    </record>
+    <record id="account_panalyty_interest_journal" model="account.journal">
+      <field name="code">PAN/INT</field>
+      <field name="name">Panalty/Interest Journal</field>
+      <field name="type">sale</field>
+    </record>
+    <record id="account_scheme_journal" model="account.journal">
+      <field name="code">SCM</field>
+      <field name="name">scheme Journal</field>
+      <field name="type">purchase</field>
+    </record>
+    <record id="account_ps_journal" model="account.journal">
+      <field name="code">APS</field>
+      <field name="name">Profit Sharing Journal</field>
+      <field name="type">purchase</field>
+    </record>
+
+    <!-- Accounts -->
+    <record id="account_loan_account" model="account.account">
+      <field name="name">Loan Account</field>
+      <field name="code">LNACC</field>
+      <field name="user_type_id" ref="account.data_account_type_revenue"/>
+      <field name="reconcile" eval="False"/>
+    </record>
+    <record id="account_scheme_account" model="account.account">
+      <field name="name">scheme Account</field>
+      <field name="code">SCACC</field>
+      <field name="user_type_id" ref="account.data_account_type_expenses"/>
+      <field name="reconcile" eval="False"/>
+    </record>
+    <record id="account_panalty_account" model="account.account">
+      <field name="name">Panalty Account</field>
+      <field name="code">PN ACC</field>
+      <field name="user_type_id" ref="account.data_account_type_revenue"/>
+      <field name="reconcile" eval="False"/>
+    </record>
+    <record id="account_interest_account" model="account.account">
+      <field name="name">Interest Account</field>
+      <field name="code">INT ACC</field>
+      <field name="user_type_id" ref="account.data_account_type_revenue"/>
+      <field name="reconcile" eval="False"/>
+    </record>
+  </data>
+</openerp>

@@ -1,0 +1,400 @@
+<openerp>
+  <data>
+    <record id="view_partner_scheme_loan_form" model="ir.ui.view">
+      <field name="name">res.partner.scheme.loan.form</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="priority" eval="21"/>
+      <field name="arch" type="xml">
+        <data>
+          <xpath expr="//div[@class='oe_edit_only']" position="after">
+            <h3>
+              <label for="account_no" string="Account Number :"/>
+              <field name="account_no" class="oe_inline"/>
+            </h3>
+          </xpath>
+          <field name="email" position="after">
+            <field name="scheme_id"/>
+          </field>
+          <page name="internal_notes" position="before">
+            <page string="Loans" col="4" name="loans">
+              <field name="loan_lines" nolabel="1" widget="one2many_list" options="{'reload_on_button': true}">
+                <tree string="Loan Lines">
+                  <field name="name"/>
+                  <field name="date"/>
+                  <field name="loan_duration"/>
+                  <field name="loan_amount"/>
+                  <field name="total_amount"/>
+                  <field name="state"/>
+                </tree>
+                <form string="Loan Lines">
+                  <group col="4">
+                    <field name="name"/>
+                    <field name="date"/>
+                  </group>
+                  <group col="4">
+                    <field name="loan_duration"/>
+                    <field name="loan_amount"/>
+                    <field name="int_type"/>
+                    <field name="yearly_loan_int"/>
+                    <field name="loan_int"/>
+                  </group>
+                  <group>
+                    <field name="total_amount"/>
+                  </group>
+                </form>
+              </field>
+            </page>
+          </page>
+        </data>
+      </field>
+    </record>
+    <!-- Loans Views -->
+    <menuitem id="menu_fund_loan_scheme" name="Scheme and Loans" parent="account.menu_finance" sequence="2"/>
+    <record id="view_fund_loan_calendar" model="ir.ui.view">
+      <field name="name">fund.loan.calendar</field>
+      <field name="model">fund.loan</field>
+      <field name="arch" type="xml">
+        <calendar string="Fund Loan" color="state" date_start="date">
+          <field name="partner_id"/>
+          <field name="total_amount"/>
+        </calendar>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="view_fund_loan_graph">
+      <field name="name">fund.loan.graph</field>
+      <field name="model">fund.loan</field>
+      <field name="arch" type="xml">
+        <graph string="Fund Laon" type="bar">
+          <field name="partner_id" type="row"/>
+          <field name="total_amount" type="measure"/>
+        </graph>
+      </field>
+    </record>
+    <record id="view_fund_loan_tree" model="ir.ui.view">
+      <field name="name">fund.loan.tree</field>
+      <field name="model">fund.loan</field>
+      <field name="priority">2</field>
+      <field name="arch" type="xml">
+        <tree string="Loan Lines">
+          <field name="name" string="No."/>
+          <field name="partner_id"/>
+          <field name="date"/>
+          <field name="loan_duration"/>
+          <field name="yearly_loan_int" string="%"/>
+          <field name="loan_amount" string="Loan" sum="Loan "/>
+          <field name="int_amt" string="Interest" sum="Interest"/>
+          <field name="total_amount" sum="Total"/>
+          <field name="balance_paid" sum="Paid"/>
+          <field name="remaining_amount" sum="Remaining"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+    <record id="view_fund_loan_form" model="ir.ui.view">
+      <field name="name">fund.loan.form</field>
+      <field name="model">fund.loan</field>
+      <field name="arch" type="xml">
+        <form string="Fund Loan">
+          <header>
+            <button name="action_validate" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ('open','cancel','paid'))]}" groups="base.group_user"/>
+            <button name="action_cancel_draft" states="cancel" string="Set to Draft" type="object"/>
+            <button name="action_cancel" attrs="{'invisible': [('state', 'in', ('draft','cancel','paid'))]}" string="Cancel" type="object" groups="base.group_user"/>
+            <field name="state" widget="statusbar" statusbar_visible="draft,open,cancel,paid" statusbar_colors="{&quot;paid&quot;:&quot;red&quot;,&quot;open&quot;:&quot;blue&quot;}"/>
+          </header>
+          <sheet>
+            <div class="oe_title oe_left">
+              <div class="oe_edit_only">
+                <label for="partner_id"/>
+              </div>
+              <h1>
+                <field name="partner_id" options="{&quot;always_reload&quot;: True}" attrs="{'readonly': [('state', 'in', ('open','paid'))]}"/>
+                <field name="name" attrs="{'readonly': [('state', 'in', ('open','paid'))]}"/>
+              </h1>
+              <group col="4">
+                <field name="date" attrs="{'readonly': [('state', 'in', ('open','paid'))]}"/>
+                <field name="loan_duration" attrs="{'readonly': [('state', 'in', ('open','paid'))]}"/>
+                <field name="loan_amount" attrs="{'readonly': [('state', 'in', ('open','paid'))]}"/>
+                <field name="int_type" attrs="{'readonly': [('state', '=', 'paid')]}"/>
+                <field name="yearly_loan_int" attrs="{'readonly': [('state', '=', 'paid')]}"/>
+                <field name="loan_int"/>
+                <field name="guarantor_ids" widget="many2many_tags" attrs="{'readonly': [('state', 'in', ('open','paid'))]}"/>
+              </group>
+            </div>
+            <div class="oe_right">
+              <group class="oe_subtotal_footer oe_right">
+                <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <div>
+                  <label for="balance_paid"/>
+                </div>
+                <field name="balance_paid" nolabel="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="remaining_amount" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+              </group>
+            </div>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+            <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
+    <record id="action_fund_loan" model="ir.actions.act_window">
+      <field name="name">Fund Loan</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">fund.loan</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form,calendar,graph</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Click to create a Loan creation for Members
+        </p>
+        <p>
+          Odoo will help you efficiently handle the complete Loan flow: validate loan, Laon entry and payment.
+        </p>
+      </field>
+    </record>
+    <menuitem action="action_fund_loan" id="menu_fund_loan" parent="menu_fund_loan_scheme" sequence="2"/>
+    <!-- scheme Views-->
+    <record id="view_fund_scheme_form" model="ir.ui.view">
+      <field name="name">fund.scheme.form</field>
+      <field name="model">fund.scheme</field>
+      <field name="arch" type="xml">
+        <form string="Fund scheme">
+          <sheet>
+            <group>
+              <group>
+                <field name="name"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="due_day"/>
+              </group>
+              <group>
+                <field name="duration"/>
+                <field name="mem_fees"/>
+                <field name="month_amt"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <record id="view_fund_scheme_tree" model="ir.ui.view">
+      <field name="name">fund.scheme.tree</field>
+      <field name="model">fund.scheme</field>
+      <field name="arch" type="xml">
+        <tree string="Fund scheme">
+          <field name="name"/>
+          <field name="start_date"/>
+          <field name="end_date"/>
+          <field name="due_day"/>
+          <field name="duration"/>
+          <field name="mem_fees"/>
+          <field name="month_amt"/>
+        </tree>
+      </field>
+    </record>
+    <record id="action_fund_scheme" model="ir.actions.act_window">
+      <field name="name">Scheme</field>
+      <field name="res_model">fund.scheme</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Click to Create membership scheme plan.
+        </p>
+        <p>
+          This will use while doing scheme monthly plan amount.
+        </p>
+      </field>
+    </record>
+    <menuitem id="menu_fund_scheme" action="action_fund_scheme" parent="menu_fund_loan_scheme" sequence="2"/>
+    <!-- Profit Sharing Views-->
+    <record id="view_profit_sharing_form" model="ir.ui.view">
+      <field name="name">profit.sharing.form</field>
+      <field name="model">profit.sharing</field>
+      <field name="arch" type="xml">
+        <form string="Profit Sharing">
+          <header>
+            <button name="action_validate" string="Validate Sharing" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ('paid','cancel'))]}" groups="base.group_user"/>
+            <button name="action_cancel_draft" states="cancel" string="Set to Draft" type="object"/>
+            <button name="action_cancel" attrs="{'invisible': [('state', 'in', ('draft','cancel'))]}" string="Cancel Order" type="object" groups="base.group_user"/>
+            <field name="state" widget="statusbar" statusbar_visible="draft,cancel,paid" statusbar_colors="{&quot;draft&quot;:&quot;blue&quot;,&quot;paid&quot;:&quot;red&quot;}"/>
+          </header>
+          <sheet>
+            <group>
+              <group>
+                <field name="name" attrs="{'readonly': [('state', '=', 'paid')]}"/>
+                <field name="date" attrs="{'readonly': [('state', '=', 'paid')]}"/>
+              </group>
+              <group>
+                <field name="start_date" attrs="{'readonly': [('state', '=', 'paid')]}"/>
+                <field name="end_date" attrs="{'readonly': [('state', '=', 'paid')]}"/>
+                <field name="balance"/>
+                <field name="tatal_int_amt"/>
+                <field name="tatal_pan_amt"/>
+              </group>
+            </group>
+            <group>
+              <field name="partner_ids" widget="many2many" options="{'no_create': True}" attrs="{'readonly': [('state', '=', 'paid')]}"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <record id="view_profit_sharing_tree" model="ir.ui.view">
+      <field name="name">profit.sharing.tree</field>
+      <field name="model">profit.sharing</field>
+      <field name="arch" type="xml">
+        <tree string="Profit Sharing">
+          <field name="name"/>
+          <field name="date"/>
+          <field name="balance"/>
+          <field name="tatal_int_amt"/>
+          <field name="tatal_pan_amt"/>
+        </tree>
+      </field>
+    </record>
+    <record id="action_profit_sharing" model="ir.actions.act_window">
+      <field name="name">Profit Sharing</field>
+      <field name="res_model">profit.sharing</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Click to Create Profit Sharing between individual member.
+        </p>
+        <p>
+          This will use to divide Interest/Panalty collection between active members.
+        </p>
+      </field>
+    </record>
+    <menuitem id="menu_profit_sharing" action="action_profit_sharing" parent="menu_fund_loan_scheme" sequence="2"/>
+    <!-- Customer Payment -->
+    <record id="view_account_payment_fund_society_tree" model="ir.ui.view">
+      <field name="name">account.payment.tree</field>
+      <field name="model">account.payment</field>
+      <field name="priority">16</field>
+      <field name="arch" type="xml">
+        <tree decoration-info="state=='draft'" decoration-muted="state=='reconciled'" edit="false">
+          <field name="payment_date"/>
+          <field name="name"/>
+          <field name="partner_id" string="Customer"/>
+          <field name="monthly_amt" string="Scheme" sum="Scheme"/>
+          <field name="total_panalty" string="Panelty" sum="Panelty"/>
+          <field name="monthly_int" string="Interest" sum="Interest"/>
+          <field name="loan_emi" string="Loan EMI" sum="Loan EMI"/>
+          <field name="amount"/>
+          <field name="total_all" string="Total" sum="Total"/>
+          <field name="state"/>
+          <field name="company_id" groups="base.group_multi_company"/>
+          <field name="currency_id" invisible="1"/>
+          <field name="partner_type" invisible="1"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="view_account_payment_form_society_fund" model="ir.ui.view">
+      <field name="name">account.payment.society.fund.form</field>
+      <field name="model">account.payment</field>
+      <field name="priority">16</field>
+      <field name="arch" type="xml">
+        <form string="Register Payment" version="7">
+          <header>
+            <button name="post" class="oe_highlight" states="draft" string="Confirm" type="object" invisible="1"/>
+            <button name="fund_post" class="oe_highlight" states="sip" string="Confirm" type="object"/>
+            <button name="action_validate_scheme" class="oe_highlight" states="draft" string="Pay SIP" type="object"/>
+            <field name="state" widget="statusbar" statusbar_visible="posted,sip,reconciled"/>
+          </header>
+          <sheet>
+            <group>
+              <group>
+                <group col="2">
+                  <field name="partner_id" attrs="{'readonly': [('state', 'in',['sip','posted','reconciled'])]}"/>
+                  <field name="partner_type" invisible="1"/>
+                  <field name="loan_id" attrs="{'invisible': [('loan_id', '=',False)]}"/>
+                  <field name="scheme_id" invisible="1"/>
+                  <field name="payment_type" invisible="1"/>
+                  <field name="payment_date" attrs="{'readonly': [('state', 'in',['sip','posted','reconciled'])]}"/>
+                  <field name="communication" attrs="{'readonly': [('state', 'in',['sip','posted','reconciled'])]}"/>
+                  <field name="journal_id" widget="selection" attrs="{'readonly': [('state', 'in',['sip','posted','reconciled'])]}"/>
+                  <field name="hide_payment_method" invisible="1"/>
+                  <field name="payment_method_id" widget="radio" attrs="{'invisible': [('hide_payment_method', '=', True)]}"/>
+                  <field name="payment_method_code" invisible="1"/>
+                  <field name="panalty" string="Add Panelty" attrs="{'readonly': [('state', 'in',['sip','posted','reconciled'])]}"/>
+                  <field name="panalty_extra" attrs="{'readonly': [('state', 'in',('sip','posted','reconciled'))]}"/>
+                </group>
+                <div class="oe_right">
+                  <group col="2" colspan="4">
+                    <div class="oe_left text-center oe_inline">
+                      <h4>Scheme<br/></h4>
+                      <h1><field name="count_scheme_current" attrs="{'invisible': [('state', 'in',['sip','posted','reconciled'])]}"/><field name="count_scheme_paid" attrs="{'invisible': [('state', '=','draft')]}"/></h1>
+                    </div>
+                    <div attrs="{'invisible': [('loan_id', '=',False)]}" class="oe_right text-center " style="width: 100%;">
+                      <h4>
+                        Loan EMI<br/></h4>
+                      <h1><field name="count_emi_current" attrs="{'invisible': [('state', 'in',['sip','posted','reconciled'])]}"/><field name="count_emi_paid" attrs="{'invisible': [('state', '=','draft')]}"/></h1>
+                    </div>
+                  </group>
+                </div>
+              </group>
+              <group class="oe_subtotal_footer oe_left" col="2">
+                <field name="monthly_amt" string="Monthly Scheme"/>
+                <field name="loan_emi" string="Loan EMI (Without interest)" attrs="{'invisible': [('loan_id', '=',False)]}"/>
+                <field name="monthly_int" string="Interest(%)" attrs="{'invisible': [('loan_id', '=',False)]}"/>
+                <field name="total_panalty" attrs="{'invisible': [('total_panalty', '=',0)]}"/>
+                <field name="printed" invisible="1"/>
+                <div/>
+              </group>
+              <group>
+                <label for="amount"/>
+                <div name="amount_div" class="o_row">
+                  <field name="total_payment"/>
+                  <field name="amount" attrs="{'invisible': [('state','=','draft')],'readonly': [('state', 'in',['posted','reconciled'])]}"/>
+                  <field name="currency_id" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency"/>
+                </div>
+              </group>
+              <group invisible="1">
+                <field name="scheme_move_id"/>
+                <field name="interest_move_id"/>
+                <field name="panalty_move_id"/>
+                <field name="payment_move_id"/>
+              </group>
+              <group attrs="{'invisible': [('payment_difference', '=', 0.0)]}">
+                <label for="payment_difference"/>
+                <div>
+                  <field name="payment_difference"/>
+                  <field name="payment_difference_handling" widget="radio" nolabel="1"/>
+                </div>
+                <field name="writeoff_account_id" string="Post Difference In" attrs="{'invisible': [('payment_difference_handling','=','open')], 'required': [('payment_difference_handling', '=', 'reconcile')]}"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_account_payments_fund_society" model="ir.actions.act_window">
+      <field name="name">Payments</field>
+      <field name="res_model">account.payment</field>
+      <field name="view_type">form</field>
+      <field
+        name="view_ids"
+        eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_account_payment_fund_society_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_payment_form_society_fund')})]"/>
+      <field name="context">{'default_payment_type': 'inbound'}</field>
+      <field name="domain">[('partner_type', '=', 'customer')]</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Click to register a payment
+        </p>
+        <p>
+          Payments are used to register liquidity movements (send, collect or transfer money). You can then process those payments by your own means or by using installed facilities.
+        </p>
+      </field>
+    </record>
+    <menuitem action="action_account_payments_fund_society" id="menu_action_account_payments_sip" parent="menu_fund_loan_scheme" sequence="2"/>
+
+  </data>
+</openerp>

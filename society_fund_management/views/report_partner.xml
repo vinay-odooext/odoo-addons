@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <template id="society_fund_management.report_loan_partner_document">
+      <t t-call="report.external_layout">
+        <div class="page">
+          <div class="row">
+            <div class="col-xs-6">
+              <span t-field="o.partner_id.name"/><br/>
+              <span t-raw="addresses[o.id].replace('\n\n', '\n').replace('\n', '&lt;br&gt;')"/>
+            </div>
+          </div>
+          <table class="table table-condensed" t-if="o.partner_id.scheme_id">
+            <thead>
+              <tr>
+                <th>Welfare Plan</th>
+                <th>Monthly Due Date</th>
+                <th>Membership Fees</th>
+                <th>Duration</th>
+                <th>Monthly Fees</th>
+              </tr>
+            </thead>
+            <tbody>
+              <td>
+                <span t-field="o.partner_id.scheme_id.name"/>
+              </td>
+              <td>
+                <span class="text-right" t-field="o.partner_id.scheme_id.due_day"/>
+              </td>
+              <td>
+                <span class="text-right" t-field="o.partner_id.scheme_id.mem_fees"/>
+              </td>
+              <td>
+                <span class="text-right" t-field="o.partner_id.scheme_id.duration"/>
+              </td>
+              <td>
+                <span class="text-right" t-field="o.partner_id.scheme_id.month_amt"/>
+              </td>
+            </tbody>
+          </table>
+          <br/>
+          <p class="text-center">
+            <u>
+              <strong t-if="o.guarantor_ids">Guarantors Details<br/></strong>
+            </u>
+          </p>
+          <table class="table table-condensed" t-if="o.guarantor_ids">
+            <thead>
+              <tr>
+                <th>Guarantors Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr t-foreach="o.guarantor_ids" t-as="g">
+                <td>
+                  <span t-field="g.name"/>
+                </td>
+                <td>
+                  <span t-field="g.phone"/>
+                </td>
+                <td>
+                  <span t-field="g.email"/>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br/>
+          <p class="text-center">
+            <u>
+              <strong t-if="getLoanLines(o)">Loan Details<br/></strong>
+            </u>
+          </p>
+          <table class="table table-condensed" t-if="getLoanLines(o)">
+            <thead>
+              <tr>
+                <th>Loan Name</th>
+                <th>Loan Date</th>
+                <th>Duration</th>
+                <th>Loan Amount</th>
+                <th>Loan Interest</th>
+                <th>Total Loan Amount</th>
+                <th>Loan Paid Amount</th>
+              </tr>
+            </thead>
+            <tr t-foreach="getLoanLines(o)" t-as="line">
+              <td>
+                <span t-esc="line['name']"/>
+              </td>
+              <td>
+                <span t-esc="line['loan_date']"/>
+              </td>
+              <td>
+                <span t-esc="line['loan_duration']"/>
+              </td>
+              <td>
+                <span t-esc="formatLang(line['loan_amount'])"/>
+              </td>
+              <td>
+                <span t-esc="formatLang(line['loan_int'])"/>
+              </td>
+              <td>
+                <span t-esc="formatLang(line['total_amount'])"/>
+              </td>
+              <td>
+                <span t-esc="formatLang(line['residual'])"/>
+              </td>
+            </tr>
+          </table>
+
+        </div>
+      </t>
+    </template>
+
+    <template id="report_loan_partner">
+      <t t-call="report.html_container">
+        <t t-foreach="doc_ids" t-as="doc_id">
+          <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'society_fund_management.report_loan_partner_document')"/>
+        </t>
+      </t>
+    </template>
+
+    <report id="report_partner_info" string="Partner Loan Info" model="fund.loan" report_type="qweb-pdf" file="society_fund_management.report_loan_partner" name="society_fund_management.report_loan_partner"/>
+
+  </data>
+</openerp>

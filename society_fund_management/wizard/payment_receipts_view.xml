@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <record id="view_payment_receipts" model="ir.ui.view">
+      <field name="name">Payment Receipts</field>
+      <field name="model">payment.receipts</field>
+      <field name="arch" type="xml">
+        <form string="Payment Receipts">
+          <group col="4">
+            <group>
+              <field name="partner_id"/>
+            </group>
+            <group>
+              <field name="front_page"/>
+              <field name="header" attrs="{'invisible': [('front_page', '=', True)]}"/>
+            </group>
+          </group>
+          <group attrs="{'invisible': [('front_page', '=', True)]}">
+            <field name="start_date"/>
+            <field name="end_date"/>
+          </group>
+          <footer>
+            <button name="print_fund" string="Print" type="object" class="oe_highlight"/>or
+            <button string="Cancel" class="oe_link" special="cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_payment_receipts" model="ir.actions.act_window">
+      <field name="name">Payment Receipts</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">payment.receipts</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="view_payment_receipts"/>
+      <field name="target">new</field>
+    </record>
+
+    <menuitem icon="STOCK_EXECUTE" name="Payment Receipts" action="action_payment_receipts" id="menu_payment_receipts" parent="menu_fund_loan_scheme"/>
+
+  </data>
+</openerp>
