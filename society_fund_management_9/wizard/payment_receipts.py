@@ -41,7 +41,7 @@ class PaymentReceipts(models.TransientModel):
              'form': data
             }
         if data['front_page']:
-            return self.env['report'].get_action(self, 'society_fund_management.report_front_page_member', data=datas)
+            return self.env['report'].get_action(self, 'society_fund_management_9.report_front_page_member', data=datas)
         if not data['start_date'] and not data['end_date']:
             raise except_orm(('Dates Range Missing'),('You have to assign dates ranges for payment receipt printing.'))
-        return self.env['report'].get_action(self, 'society_fund_management.report_payment_receipts_fund', data=datas)
+        return self.env['report'].get_action(self, 'society_fund_management_9.report_payment_receipts_fund', data=datas)

@@ -2,7 +2,7 @@
 <openerp>
   <data>
 
-    <record id="society_fund_management.paper_format_payment_receipts" model="report.paperformat">
+    <record id="society_fund_management_9.paper_format_payment_receipts" model="report.paperformat">
       <field name="name">Payment Receipts</field>
       <field name="default" eval="False"/>
       <field name="format">custom</field>
@@ -18,7 +18,7 @@
       <field name="dpi">1200</field>
     </record>
 
-    <record id="society_fund_management.paper_format_front_page" model="report.paperformat">
+    <record id="society_fund_management_9.paper_format_front_page" model="report.paperformat">
       <field name="name">Partner Front Page</field>
       <field name="default" eval="False"/>
       <field name="format">custom</field>

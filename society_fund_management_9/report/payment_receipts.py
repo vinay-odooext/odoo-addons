@@ -161,13 +161,13 @@ class PaymentReceipts(report_sxw.rml_parse):
 class report_payment_receipts(osv.AbstractModel):
     _name = 'report.society_fund_management.report_payment_receipts_fund'
     _inherit = 'report.abstract_report'
-    _template = 'society_fund_management.report_payment_receipts_fund'
+    _template = 'society_fund_management_9.report_payment_receipts_fund'
     _wrapped_report_class = PaymentReceipts
 
 class report_payment_receiptsother(osv.AbstractModel):
     _name = 'report.society_fund_management.report_front_page_member'
     _inherit = 'report.abstract_report'
-    _template = 'society_fund_management.report_front_page_member'
+    _template = 'society_fund_management_9.report_front_page_member'
     _wrapped_report_class = PaymentReceipts
 
 

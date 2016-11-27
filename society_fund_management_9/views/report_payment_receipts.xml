@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <template id="society_fund_management.report_payment_receipts_fund">
+    <template id="society_fund_management_9.report_payment_receipts_fund">
       <div class="page">
         <table class="table table-condensed" style="width: 100%;">
           <thead t-if="getHeader(data['form'])">
@@ -50,10 +50,10 @@
         </table>
       </div>
     </template>
-    <report id="report_payment_receipts" string="Payment Receipts" model="res.partner" report_type="qweb-pdf" menu="False" file="society_fund_management.report_payment_receipts_fund" name="society_fund_management.report_payment_receipts_fund"/>
+    <report id="report_payment_receipts" string="Payment Receipts" model="res.partner" report_type="qweb-pdf" menu="False" file="society_fund_management_9.report_payment_receipts_fund" name="society_fund_management.report_payment_receipts_fund"/>
 
-    <record id="society_fund_management.report_payment_receipts" model="ir.actions.report.xml">
-      <field name="paperformat_id" ref="society_fund_management.paper_format_payment_receipts"/>
+    <record id="society_fund_management_9.report_payment_receipts" model="ir.actions.report.xml">
+      <field name="paperformat_id" ref="society_fund_management_9.paper_format_payment_receipts"/>
     </record>
   </data>
 </openerp>

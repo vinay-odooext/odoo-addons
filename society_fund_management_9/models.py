@@ -78,10 +78,10 @@ class fund_loan(models.Model):
     _description = 'Fund Loan'
 
     def _default_loan_journal_methods(self):
-        return self.env.ref('society_fund_management.account_loan_journal')
+        return self.env.ref('society_fund_management_9.account_loan_journal')
 
     def _default_loan_account_methods(self):
-        return self.env.ref('society_fund_management.account_loan_account')
+        return self.env.ref('society_fund_management_9.account_loan_account')
 
     name = fields.Char(string='Number', required=True, copy=False, readonly=True, index=True, default='New')
     partner_id = fields.Many2one('res.partner', string='Member', ondelete='cascade', index=True, required=True)
@@ -118,7 +118,7 @@ class fund_loan(models.Model):
                 for line in record.move_id.line_ids:
                     if line.reconciled:
                         residual += line.debit
-            journal_interest = self.env.ref('society_fund_management.account_panalyty_interest_journal')
+            journal_interest = self.env.ref('society_fund_management_9.account_panalyty_interest_journal')
             account_ml = self.env['account.move.line'].search([('loan_id','=',record.id),('journal_id','=',journal_interest.id),('account_id','=',record.partner_id.property_account_receivable_id.id)])
             for ml in account_ml:
                 if ml.reconciled:
@@ -220,25 +220,25 @@ class fund_payment(models.Model):
     _description = 'Scheme Fund Payment'
 
     def _default_scheme_journal_methods(self):
-        return self.env.ref('society_fund_management.account_scheme_journal')
+        return self.env.ref('society_fund_management_9.account_scheme_journal')
 
     def _default_panalty_interest_journal_methods(self):
-        return self.env.ref('society_fund_management.account_panalyty_interest_journal')
+        return self.env.ref('society_fund_management_9.account_panalyty_interest_journal')
 
     def _default_scheme_account_methods(self):
-        return self.env.ref('society_fund_management.account_scheme_account')
+        return self.env.ref('society_fund_management_9.account_scheme_account')
 
     def _default_panalty_account_methods(self):
-        return self.env.ref('society_fund_management.account_panalty_account')
+        return self.env.ref('society_fund_management_9.account_panalty_account')
 
     def _default_interest_account_methods(self):
-        return self.env.ref('society_fund_management.account_interest_account')
+        return self.env.ref('society_fund_management_9.account_interest_account')
 
     def _default_analytic_interest_methods(self):
-        return self.env.ref('society_fund_management.analytic_interest_society')
+        return self.env.ref('society_fund_management_9.analytic_interest_society')
 
     def _default_analytic_panalty_methods(self):
-        return self.env.ref('society_fund_management.analytic_panalty_society')
+        return self.env.ref('society_fund_management_9.analytic_panalty_society')
 
     scheme_id = fields.Many2one(related='partner_id.scheme_id', store=True, readonly=True, copy=False)
     scheme_journal_id = fields.Many2one('account.journal', 'scheme Journal', domain="[('type','=','purchase')]", default=lambda self: self._default_scheme_journal_methods())
@@ -294,7 +294,7 @@ class fund_payment(models.Model):
     @api.depends('partner_id','scheme_id')
     def _count_scheme(self):
         account_move_line_obj = self.env['account.move.line']
-        scheme_account_id = self.env.ref('society_fund_management.account_scheme_account').id
+        scheme_account_id = self.env.ref('society_fund_management_9.account_scheme_account').id
         for record in self:
             if record.scheme_id:
                 domain = [('move_id.name','=',record.scheme_id.name),('partner_id','=',record.partner_id.id),('debit','=',record.scheme_id.month_amt), ('account_id','=',scheme_account_id)]
@@ -467,13 +467,13 @@ class profit_sharing(models.Model):
     _description = 'Fund scheme Profit Sharing'
 
     def _default_ps_journal_methods(self):
-        return self.env.ref('society_fund_management.account_ps_journal')
+        return self.env.ref('society_fund_management_9.account_ps_journal')
 
     def _default_panalty_account_methods(self):
-        return self.env.ref('society_fund_management.account_panalty_account')
+        return self.env.ref('society_fund_management_9.account_panalty_account')
 
     def _default_interest_account_methods(self):
-        return self.env.ref('society_fund_management.account_interest_account')
+        return self.env.ref('society_fund_management_9.account_interest_account')
 
     name = fields.Char(string='Welfare Profit Sharing', required=True)
     date = fields.Date(string='Date', copy=False, required=True, default=fields.Date.context_today)

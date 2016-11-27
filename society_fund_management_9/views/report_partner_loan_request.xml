@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <template id="society_fund_management.report_loan_partner_request_document">
+    <template id="society_fund_management_9.report_loan_partner_request_document">
       <t t-call="report.external_layout">
         <div class="page">
           <p class="text-center">
@@ -110,12 +110,12 @@
     <template id="report_loan_request_form">
       <t t-call="report.html_container">
         <t t-foreach="doc_ids" t-as="doc_id">
-          <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'society_fund_management.report_loan_partner_request_document')"/>
+          <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'society_fund_management_9.report_loan_partner_request_document')"/>
         </t>
       </t>
     </template>
 
-    <report id="report_loan_req_info" string="Loan Request Form" model="fund.loan" report_type="qweb-pdf" file="society_fund_management.report_loan_request_form" name="society_fund_management.report_loan_request_form"/>
+    <report id="report_loan_req_info" string="Loan Request Form" model="fund.loan" report_type="qweb-pdf" file="society_fund_management_9.report_loan_request_form" name="society_fund_management.report_loan_request_form"/>
 
   </data>
 </openerp>

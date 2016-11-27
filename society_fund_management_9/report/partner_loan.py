@@ -57,12 +57,12 @@ class PartnerLoan(report_sxw.rml_parse):
 class report_partner_loan(osv.AbstractModel):
     _name = 'report.society_fund_management.report_loan_partner'
     _inherit = 'report.abstract_report'
-    _template = 'society_fund_management.report_loan_partner'
+    _template = 'society_fund_management_9.report_loan_partner'
     _wrapped_report_class = PartnerLoan
 
 class report_parner_loan_request(osv.AbstractModel):
     _name = 'report.society_fund_management.report_loan_request_form'
     _inherit = 'report.abstract_report'
-    _template = 'society_fund_management.report_loan_request_form'
+    _template = 'society_fund_management_9.report_loan_request_form'
     _wrapped_report_class = PartnerLoan
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

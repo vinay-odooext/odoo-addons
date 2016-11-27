@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <template id="society_fund_management.report_front_page_member">
+    <template id="society_fund_management_9.report_front_page_member">
       <t t-foreach="getPartner(data)" t-as="l">
         <div class="page">
           <table class="table table-condensed ">
@@ -46,10 +46,10 @@
       </t>
     </template>
 
-    <report id="report_front_page" string="Payment Front Page" model="res.partner" menu="False" report_type="qweb-pdf" file="society_fund_management.report_front_page_member" name="society_fund_management.report_front_page_member"/>
+    <report id="report_front_page" string="Payment Front Page" model="res.partner" menu="False" report_type="qweb-pdf" file="society_fund_management_9.report_front_page_member" name="society_fund_management.report_front_page_member"/>
 
-    <record id="society_fund_management.report_front_page" model="ir.actions.report.xml">
-      <field name="paperformat_id" ref="society_fund_management.paper_format_front_page"/>
+    <record id="society_fund_management_9.report_front_page" model="ir.actions.report.xml">
+      <field name="paperformat_id" ref="society_fund_management_9.paper_format_front_page"/>
     </record>
 
   </data>
